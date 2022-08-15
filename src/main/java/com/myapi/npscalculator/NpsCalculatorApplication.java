@@ -15,6 +15,6 @@ public class NpsCalculatorApplication {
 
 	@GetMapping("/")
 	public String hello() {
-		return "Hello World!";
+		return "Bem vindo a calculadora nps!";
 	}
 }
