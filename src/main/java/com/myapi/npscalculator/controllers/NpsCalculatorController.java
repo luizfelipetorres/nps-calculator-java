@@ -20,6 +20,8 @@ import com.myapi.npscalculator.dtos.NpsCalculatorDto;
 import com.myapi.npscalculator.models.NpsCalculatorModel;
 import com.myapi.npscalculator.services.NpsCalculatorService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @CrossOrigin(origins = "*", maxAge = 36000)
 @RequestMapping("/nps-calculator")
@@ -29,44 +31,38 @@ public class NpsCalculatorController {
     NpsCalculatorService npsCalculatorService;
 
     @PostMapping
+    @ApiOperation(value = "Enviar um novo cálculo de NPS")
     public ResponseEntity<Object> saveNps(@RequestBody @Valid NpsCalculatorDto npsCalculatorDto) {
-        var npsCalculatorModel = new NpsCalculatorModel();
-        BeanUtils.copyProperties(npsCalculatorDto, npsCalculatorModel);
+        var model = new NpsCalculatorModel();
+        BeanUtils.copyProperties(npsCalculatorDto, model);
 
-        if (npsCalculatorService.isAllZero(npsCalculatorModel))
+        if (npsCalculatorService.isAllZero(model))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Campos zerados! Consulta inválida.");
 
+        model.setTotal(model.getDetractorsAmount() + model.getPassivesAmount() + model.getPromotorsAmount());
+        model.setDetractorsPercentage(model.getDetractorsAmount() / (float) model.getTotal() * 100);
+        model.setPassivesPercentage(model.getPassivesAmount() / (float) model.getTotal() * 100);
+        model.setPromotorsPercentage(model.getPromotorsAmount() / (float) model.getTotal() * 100);
+        model.setNpsPercentage(model.getPromotorsPercentage() - model.getDetractorsPercentage());
 
-        npsCalculatorModel.setTotal(npsCalculatorModel.getDetractorsAmount() + npsCalculatorModel.getPassivesAmount()
-                + npsCalculatorModel.getPromotorsAmount());
-        npsCalculatorModel
-                .setDetractorsPercentage(
-                        npsCalculatorModel.getDetractorsAmount() / (float) npsCalculatorModel.getTotal() * 100);
-        npsCalculatorModel
-                .setPassivesPercentage(
-                        npsCalculatorModel.getPassivesAmount() / (float) npsCalculatorModel.getTotal() * 100);
-        npsCalculatorModel
-                .setPromotorsPercentage(
-                        npsCalculatorModel.getPromotorsAmount() / (float) npsCalculatorModel.getTotal() * 100);
-        npsCalculatorModel.setNpsPercentage(
-                npsCalculatorModel.getPromotorsPercentage() - npsCalculatorModel.getDetractorsPercentage());
-
-        return ResponseEntity.status(HttpStatus.OK).body(npsCalculatorService.save(npsCalculatorModel));
+        return ResponseEntity.status(HttpStatus.OK).body(npsCalculatorService.save(model));
     }
 
     @GetMapping
-    public ResponseEntity<List<NpsCalculatorModel>> getAll(){
+    @ApiOperation(value = "Retornar todas as consultas feitas")
+    public ResponseEntity<List<NpsCalculatorModel>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(npsCalculatorService.getAll());
     }
 
     @GetMapping("/greater-than-{nps}")
-    public ResponseEntity<List<NpsCalculatorModel>> getGreaterThan(@PathVariable(value = "nps") int nps){
-
+    @ApiOperation(value = "Faz uma consulta apenas de valores maiores que {nps}")
+    public ResponseEntity<List<NpsCalculatorModel>> getGreaterThan(@PathVariable(value = "nps") int nps) {
         return ResponseEntity.status(HttpStatus.OK).body(npsCalculatorService.getGreaterThan(nps));
     }
 
     @GetMapping("/less-than-{nps}")
-    public ResponseEntity<List<NpsCalculatorModel>> getLessThan(@PathVariable(value = "nps") int nps){
+    @ApiOperation(value = "Faz uma consulta apenas de valores menores que {nps}")
+    public ResponseEntity<List<NpsCalculatorModel>> getLessThan(@PathVariable(value = "nps") int nps) {
         return ResponseEntity.status(HttpStatus.OK).body(npsCalculatorService.getLessThan(nps));
     }
 }
