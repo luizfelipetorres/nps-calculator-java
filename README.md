@@ -14,7 +14,7 @@ API que que recebe a quantidade de ontas detratoras, neutras e promotoras e faz 
 
 ## Links
 - [Projeto no Heroku](https://nps-calculator-java.herokuapp.com/)
-- [Documentação Swagger](https://nps-calculator-java.herokuapp.com/swagger-ui)
+- [Documentação Swagger](https://nps-calculator-java.herokuapp.com/swagger-ui/)
 - Projeto antigo usando HTML, CSS e JS:
     - [Repositório](https://github.com/luizfelipetorres/NPS-Calculator)
     - [GH Pages](https://luizfelipetorres.github.io/NPS-Calculator/)
