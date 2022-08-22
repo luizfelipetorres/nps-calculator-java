@@ -21,8 +21,6 @@ public class NpsCalculatorDto {
     @Max(value = 100, message = "Valores maiores que 100 não são aceitos!")
     private Integer personalGoal;
 
-    
-
     public int getDetractorsAmount() {
         return detractorsAmount;
     }

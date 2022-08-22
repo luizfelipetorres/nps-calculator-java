@@ -47,11 +47,11 @@ public class NpsCalculatorController {
         else
             model = npsCalculatorService.calculateGrades(model);
 
-        if (model.getPersonalGoal() != null){
+        if (model.getPersonalGoal() != null) {
             model.setNeededToReachGoal(npsCalculatorService.calculateGoals(model));
             model.setGoalAchived(model.getNeededToReachGoal() == 0 ? true : false);
-        } 
-            
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(npsCalculatorService.save(model));
     }
 
@@ -94,7 +94,7 @@ public class NpsCalculatorController {
 
     @GetMapping("/get-all-with-goal")
     @ApiOperation(value = "Retornar todas as consultas com Goal != null")
-    public ResponseEntity<List<NpsCalculatorModel>> getAllWithPersonalGoal(){
+    public ResponseEntity<List<NpsCalculatorModel>> getAllWithPersonalGoal() {
         return ResponseEntity.status(HttpStatus.OK).body(npsCalculatorService.getAllWithGoal());
     }
 }

@@ -83,7 +83,6 @@ public class NpsCalculatorService {
 
     public int calculateGoals(NpsCalculatorModel model) {
         NpsCalculatorModel copy = new NpsCalculatorModel();
-        int promotorsRemaining = 0;
 
         BeanUtils.copyProperties(model, copy);
 
@@ -95,11 +94,11 @@ public class NpsCalculatorService {
         return copy.getPromotorsAmount() - model.getPromotorsAmount();
     }
 
-    public List<NpsCalculatorModel> getAllWithGoal(){
+    public List<NpsCalculatorModel> getAllWithGoal() {
         return this.getAll()
-            .stream()
-            .filter(i -> i.getPersonalGoal() != null)
-            .collect(Collectors.toList());
+                .stream()
+                .filter(i -> i.getPersonalGoal() != null)
+                .collect(Collectors.toList());
     }
 
 }
