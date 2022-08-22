@@ -28,8 +28,8 @@ public class NpsCalculatorModel {
     @Column(nullable = false)
     private int promotorsAmount;
 
-    @Column(nullable = false)
-    private float personalGoal;
+    @Column(nullable = true)
+    private Integer personalGoal;
 
     @Column(nullable = false)
     private int total;
@@ -46,11 +46,35 @@ public class NpsCalculatorModel {
     @Column(nullable = false)
     private float npsPercentage;
 
-    @Column(nullable = false)
-    private boolean isGoalAchived;
+    @Column(nullable = true)
+    private Boolean isGoalAchived;
 
-    @Column
-    private float neededToReachGoal;
+    @Column(nullable = true)
+    private Integer neededToReachGoal;
+
+    public Integer getPersonalGoal() {
+        return personalGoal;
+    }
+
+    public void setPersonalGoal(Integer personalGoal) {
+        this.personalGoal = personalGoal;
+    }
+
+    public Boolean isGoalAchived() {
+        return isGoalAchived;
+    }
+
+    public void setGoalAchived(Boolean isGoalAchived) {
+        this.isGoalAchived = isGoalAchived;
+    }
+
+    public Integer getNeededToReachGoal() {
+        return neededToReachGoal;
+    }
+
+    public void setNeededToReachGoal(Integer neededToReachGoal) {
+        this.neededToReachGoal = neededToReachGoal;
+    }
 
     public static long getSerialversionuid() {
         return serialVersionUID;

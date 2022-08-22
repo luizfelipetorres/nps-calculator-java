@@ -3,6 +3,7 @@ package com.myapi.npscalculator.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,5 +71,35 @@ public class NpsCalculatorService {
                 .collect(Collectors.toList());
     }
 
-    
+    public NpsCalculatorModel calculateGrades(NpsCalculatorModel model) {
+        model.setTotal(model.getDetractorsAmount() + model.getPassivesAmount() + model.getPromotorsAmount());
+        model.setDetractorsPercentage(model.getDetractorsAmount() / (float) model.getTotal() * 100);
+        model.setPassivesPercentage(model.getPassivesAmount() / (float) model.getTotal() * 100);
+        model.setPromotorsPercentage(model.getPromotorsAmount() / (float) model.getTotal() * 100);
+        model.setNpsPercentage(model.getPromotorsPercentage() - model.getDetractorsPercentage());
+
+        return model;
+    }
+
+    public int calculateGoals(NpsCalculatorModel model) {
+        NpsCalculatorModel copy = new NpsCalculatorModel();
+        int promotorsRemaining = 0;
+
+        BeanUtils.copyProperties(model, copy);
+
+        while (copy.getNpsPercentage() < copy.getPersonalGoal()) {
+            copy.setPromotorsAmount(copy.getPromotorsAmount() + 1);
+            copy = calculateGrades(copy);
+        }
+
+        return copy.getPromotorsAmount() - model.getPromotorsAmount();
+    }
+
+    public List<NpsCalculatorModel> getAllWithGoal(){
+        return this.getAll()
+            .stream()
+            .filter(i -> i.getPersonalGoal() != null)
+            .collect(Collectors.toList());
+    }
+
 }

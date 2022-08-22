@@ -44,13 +44,14 @@ public class NpsCalculatorController {
 
         if (npsCalculatorService.isAllZero(model))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Campos zerados! Consulta inválida.");
+        else
+            model = npsCalculatorService.calculateGrades(model);
 
-        model.setTotal(model.getDetractorsAmount() + model.getPassivesAmount() + model.getPromotorsAmount());
-        model.setDetractorsPercentage(model.getDetractorsAmount() / (float) model.getTotal() * 100);
-        model.setPassivesPercentage(model.getPassivesAmount() / (float) model.getTotal() * 100);
-        model.setPromotorsPercentage(model.getPromotorsAmount() / (float) model.getTotal() * 100);
-        model.setNpsPercentage(model.getPromotorsPercentage() - model.getDetractorsPercentage());
-
+        if (model.getPersonalGoal() != null){
+            model.setNeededToReachGoal(npsCalculatorService.calculateGoals(model));
+            model.setGoalAchived(model.getNeededToReachGoal() == 0 ? true : false);
+        } 
+            
         return ResponseEntity.status(HttpStatus.OK).body(npsCalculatorService.save(model));
     }
 
@@ -89,5 +90,11 @@ public class NpsCalculatorController {
     @ApiOperation(value = "Faz uma consulta apenas de valores menores que {nps}")
     public ResponseEntity<List<NpsCalculatorModel>> getLessThan(@PathVariable(value = "nps") int nps) {
         return ResponseEntity.status(HttpStatus.OK).body(npsCalculatorService.getLessThan(nps));
+    }
+
+    @GetMapping("/get-all-with-goal")
+    @ApiOperation(value = "Retornar todas as consultas com Goal != null")
+    public ResponseEntity<List<NpsCalculatorModel>> getAllWithPersonalGoal(){
+        return ResponseEntity.status(HttpStatus.OK).body(npsCalculatorService.getAllWithGoal());
     }
 }
