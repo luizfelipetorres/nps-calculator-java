@@ -1,7 +1,9 @@
 package com.myapi.npscalculator.dtos;
 
 import javax.validation.constraints.Min;
-
+/**
+ * Data Transfer Object with some validations for NpsCalculatorModel
+ */
 public class NpsCalculatorDto {
 
     @Min(value = 0, message = "Valores menores que 0 não são aceitos!")

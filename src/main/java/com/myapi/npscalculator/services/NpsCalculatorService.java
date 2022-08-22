@@ -19,16 +19,34 @@ public class NpsCalculatorService {
         return npsCalculatorRepository.save(npsCalculatorModel);
     }
 
+    /**
+     * Verifies if all values for nps are zero
+     * 
+     * @param nps NpsCalculatorModel
+     * @return True or false
+     */
     public boolean isAllZero(NpsCalculatorModel nps) {
         return nps.getDetractorsAmount() == 0 && nps.getPassivesAmount() == 0 && nps.getPromotorsAmount() == 0
                 ? true
                 : false;
     }
 
+    /**
+     * Return a list of all consults in the DB
+     * 
+     * @return List of NpsCalculatorModel
+     */
     public List<NpsCalculatorModel> getAll() {
         return npsCalculatorRepository.findAll();
     }
 
+    /**
+     * Returns a list of NpsCalculatorModel that have NPS percentage smaller than
+     * param NPS
+     * 
+     * @param nps NpsCalculatorModel
+     * @return A list of NpsCalculatorModel
+     */
     public List<NpsCalculatorModel> getGreaterThan(int nps) {
         return this
                 .getAll()
@@ -37,6 +55,13 @@ public class NpsCalculatorService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Returns a list of NpsCalculatorModel that have NPS percentage bigger than
+     * param NPS
+     * 
+     * @param nps NpsCalculatorModel
+     * @return A list of NpsCalculatorModel
+     */
     public List<NpsCalculatorModel> getLessThan(int nps) {
         return this
                 .getAll()
@@ -45,4 +70,5 @@ public class NpsCalculatorService {
                 .collect(Collectors.toList());
     }
 
+    
 }

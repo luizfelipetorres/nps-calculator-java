@@ -30,6 +30,12 @@ public class NpsCalculatorController {
     @Autowired
     NpsCalculatorService npsCalculatorService;
 
+    /**
+     * Responsible for calculate NPS percentage and save into the DB.
+     * 
+     * @param npsCalculatorDto Data transfer object for NpsCalculatorModel.
+     * @return A response entity with OK and the values in json or BAD_REQUEST
+     */
     @PostMapping
     @ApiOperation(value = "Enviar um novo cálculo de NPS")
     public ResponseEntity<Object> saveNps(@RequestBody @Valid NpsCalculatorDto npsCalculatorDto) {
@@ -48,18 +54,37 @@ public class NpsCalculatorController {
         return ResponseEntity.status(HttpStatus.OK).body(npsCalculatorService.save(model));
     }
 
+    /**
+     * Return all the previous consults made
+     * 
+     * @return All the previous consults
+     */
     @GetMapping
     @ApiOperation(value = "Retornar todas as consultas feitas")
     public ResponseEntity<List<NpsCalculatorModel>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(npsCalculatorService.getAll());
     }
 
+    /**
+     * Receive a NPS value and return a list of NPS with values bigger than the
+     * param NPS
+     * 
+     * @param nps Minimum NPS value for consult
+     * @return Values bigger than param NPS
+     */
     @GetMapping("/greater-than-{nps}")
     @ApiOperation(value = "Faz uma consulta apenas de valores maiores que {nps}")
     public ResponseEntity<List<NpsCalculatorModel>> getGreaterThan(@PathVariable(value = "nps") int nps) {
         return ResponseEntity.status(HttpStatus.OK).body(npsCalculatorService.getGreaterThan(nps));
     }
 
+    /**
+     * Receive a NPS value and return a list of NPS with values smallest than the
+     * param NPS
+     * 
+     * @param nps Maximun NPS value for consult
+     * @return Values smaller than param NPS
+     */
     @GetMapping("/less-than-{nps}")
     @ApiOperation(value = "Faz uma consulta apenas de valores menores que {nps}")
     public ResponseEntity<List<NpsCalculatorModel>> getLessThan(@PathVariable(value = "nps") int nps) {

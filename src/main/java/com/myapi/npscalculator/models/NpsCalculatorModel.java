@@ -29,8 +29,11 @@ public class NpsCalculatorModel {
     private int promotorsAmount;
 
     @Column(nullable = false)
+    private float personalGoal;
+
+    @Column(nullable = false)
     private int total;
-    
+
     @Column(nullable = false)
     private float detractorsPercentage;
 
@@ -43,6 +46,12 @@ public class NpsCalculatorModel {
     @Column(nullable = false)
     private float npsPercentage;
 
+    @Column(nullable = false)
+    private boolean isGoalAchived;
+
+    @Column
+    private float neededToReachGoal;
+
     public static long getSerialversionuid() {
         return serialVersionUID;
     }
@@ -50,7 +59,6 @@ public class NpsCalculatorModel {
     public UUID getId() {
         return id;
     }
-
 
     public int getDetractorsAmount() {
         return detractorsAmount;
@@ -116,5 +124,4 @@ public class NpsCalculatorModel {
         this.npsPercentage = npsPercentage;
     }
 
-    
 }
